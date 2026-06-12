@@ -42,8 +42,9 @@ export default async function handler(req, res) {
     if (err instanceof EngineConfigError) {
       return res.status(503).json({ error: err.message });
     }
-    // Don't leak internals or image data; log only the message.
+    // Log the message, and surface a short detail to help debugging.
     console.error(`tryon[${engine}] failed:`, err?.message);
-    return res.status(502).json({ error: 'Try-on failed. Please try again.' });
+    const detail = String(err?.message || 'unknown error').slice(0, 300);
+    return res.status(502).json({ error: `Try-on failed: ${detail}` });
   }
 }

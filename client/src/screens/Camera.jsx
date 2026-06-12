@@ -1,7 +1,7 @@
 // Camera capture: live preview, body-framing overlay, 3-2-1 countdown, capture a
 // still to JPEG, and a retake option (PLAN.md §6). Captures a frame, not a stream.
 import { useEffect, useRef, useState } from 'react';
-import { scaleImageToJpeg } from '../imageUtils.js';
+import { captureFrameToJpeg } from '../imageUtils.js';
 
 export default function Camera({ onBack, onCapture }) {
   const videoRef = useRef(null);
@@ -16,7 +16,18 @@ export default function Camera({ onBack, onCapture }) {
     async function start() {
       try {
         const stream = await navigator.mediaDevices.getUserMedia({
-          video: { facingMode: 'user', width: { ideal: 1080 }, height: { ideal: 1440 } },
+          video: {
+            facingMode: 'user',
+            width: { ideal: 1080 },
+            height: { ideal: 1440 },
+            // Best-effort: keep auto-exposure/white-balance/focus running so the
+            // camera adapts to the kiosk lighting. Unsupported hints are ignored.
+            advanced: [
+              { exposureMode: 'continuous' },
+              { whiteBalanceMode: 'continuous' },
+              { focusMode: 'continuous' },
+            ],
+          },
           audio: false,
         });
         if (cancelled) {
@@ -67,7 +78,7 @@ export default function Camera({ onBack, onCapture }) {
   function capture() {
     const video = videoRef.current;
     if (!video) return;
-    const jpeg = scaleImageToJpeg(video, video.videoWidth, video.videoHeight);
+    const jpeg = captureFrameToJpeg(video, video.videoWidth, video.videoHeight);
     setShot(jpeg);
   }
 
@@ -102,7 +113,7 @@ export default function Camera({ onBack, onCapture }) {
         {!shot && (
           <div className="frame-overlay" aria-hidden="true">
             <div className="frame-outline" />
-            <span className="frame-hint">Stand back so your upper body fits the outline</span>
+            <span className="frame-hint">Fit your upper body in the outline · face a light source</span>
           </div>
         )}
 

@@ -6,11 +6,16 @@
   "scripts": {
     "dev": "vercel dev",
     "build": "npm --prefix client install && npm --prefix client run build",
+    "serve": "node server/dev.js",
+    "kiosk": "npm run build && node server/dev.js",
     "start": "vercel dev"
   },
   "dependencies": {
     "@gradio/client": "^1.10.0",
     "@upstash/redis": "^1.34.3"
+  },
+  "devDependencies": {
+    "express": "^4.21.2"
   },
   "engines": {
     "node": ">=18"

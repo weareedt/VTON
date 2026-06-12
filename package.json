@@ -1,0 +1,17 @@
+{
+  "name": "vton-kiosk",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vercel dev",
+    "build": "npm --prefix client install && npm --prefix client run build",
+    "start": "vercel dev"
+  },
+  "dependencies": {
+    "@upstash/redis": "^1.34.3"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

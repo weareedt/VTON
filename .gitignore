@@ -1,0 +1,23 @@
+# dependencies
+node_modules/
+client/node_modules/
+
+# build output
+client/dist/
+.vercel/
+
+# env / secrets
+.env
+.env.local
+.env.*.local
+
+# logs
+npm-debug.log*
+*.log
+
+# os / editor
+.DS_Store
+Thumbs.db
+
+# local tooling
+.claude/

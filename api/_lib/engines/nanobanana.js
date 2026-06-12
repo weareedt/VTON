@@ -15,12 +15,30 @@ import { EngineConfigError } from '../errors.js';
 const API_BASE = 'https://generativelanguage.googleapis.com/v1beta';
 const DEFAULT_MODEL = 'gemini-2.5-flash-image';
 
-const PROMPT =
-  'The first image is a person. The second image is a clothing garment. ' +
-  'Generate a realistic photo of the exact same person wearing that garment. ' +
-  "Keep the person's face, hair, body shape, pose, and the background unchanged. " +
-  "Replace only their clothing. Match the garment's color, pattern, text, and " +
-  'details as accurately as possible. Output a single photorealistic image.';
+// Forceful, explicit prompt — Gemini will often return the input nearly unchanged
+// if the instruction is timid, so we command the edit directly. Override at
+// runtime with the NANOBANANA_PROMPT env var (no code change needed).
+const DEFAULT_PROMPT = [
+  'You are a virtual try-on system. You are given two images:',
+  'IMAGE 1 is a photo of a person. IMAGE 2 is a clothing garment shown on its own.',
+  '',
+  'TASK: Produce a NEW, edited photo of the person from IMAGE 1 actually WEARING',
+  'the garment from IMAGE 2. You MUST remove the clothing the person is currently',
+  'wearing and replace it with the garment from IMAGE 2 fitted naturally onto their body.',
+  '',
+  'STRICT REQUIREMENTS:',
+  "- Keep the person's face, hairstyle, skin tone, body shape, and pose EXACTLY the same.",
+  '- Keep the background and lighting the same.',
+  '- Change ONLY the clothing. Fit the new garment realistically with natural folds,',
+  '  shadows, and correct proportions for the body.',
+  "- Reproduce the garment's exact color, pattern, texture, logos, and any text from IMAGE 2.",
+  '- The result must clearly show the person dressed in the NEW garment, not their original outfit.',
+  '',
+  'Do NOT return IMAGE 1 unchanged. Output exactly one photorealistic image of the',
+  'person wearing the new garment.',
+].join('\n');
+
+const PROMPT = process.env.NANOBANANA_PROMPT || DEFAULT_PROMPT;
 
 export async function run({ garment, person }) {
   const apiKey = process.env.GEMINI_API_KEY;

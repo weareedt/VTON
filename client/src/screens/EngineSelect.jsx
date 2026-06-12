@@ -2,18 +2,18 @@
 // plus the PDPA consent line before the camera step (PLAN.md §9).
 const ENGINES = [
   {
-    id: 'idmvton',
-    emoji: '🧪',
-    title: 'IDM-VTON',
-    sub: 'Experimental clothing swap',
-    tag: 'Free',
-  },
-  {
     id: 'nanobanana',
     emoji: '🎯',
     title: 'Nano Banana',
     sub: 'Accurate, realistic result',
     tag: 'AI',
+  },
+  {
+    id: 'idmvton',
+    emoji: '🧪',
+    title: 'IDM-VTON',
+    sub: 'Experimental clothing swap',
+    tag: 'Free',
   },
 ];
 

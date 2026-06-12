@@ -2,11 +2,11 @@
 // plus the PDPA consent line before the camera step (PLAN.md §9).
 const ENGINES = [
   {
-    id: 'fashn',
+    id: 'idmvton',
     emoji: '🎯',
     title: 'Accurate',
     sub: 'Best for a true, detailed clothing swap',
-    tag: 'FASHN',
+    tag: 'IDM-VTON · free',
   },
   {
     id: 'nanobanana',

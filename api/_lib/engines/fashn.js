@@ -1,11 +1,9 @@
 // FASHN v1.6 — REAL integration. Purpose-built virtual try-on.
 // Submit-then-poll async API. Keys live in the FASHN_API_KEY env var (server only).
 import { toDataUrl, parseDataUrl } from '../images.js';
+import { EngineConfigError } from '../errors.js';
 
 const FASHN_BASE = 'https://api.fashn.ai/v1';
-
-// Error subclass so the route can map a missing key to a 503 instead of a 500.
-export class EngineConfigError extends Error {}
 
 const POLL_INTERVAL_MS = 1500;
 // Leave headroom under the function maxDuration (60s). FASHN Performance ~7s.

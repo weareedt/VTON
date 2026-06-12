@@ -9,6 +9,7 @@
     "start": "vercel dev"
   },
   "dependencies": {
+    "@gradio/client": "^1.10.0",
     "@upstash/redis": "^1.34.3"
   },
   "engines": {

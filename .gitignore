@@ -21,3 +21,12 @@ Thumbs.db
 
 # local tooling
 .claude/
+
+# local test artifacts (don't commit visitor/test photos or outputs)
+/garment.jpg
+/person*.jpg
+/tryon-output.*
+
+# never commit secrets / tokens
+hf_*
+*.token

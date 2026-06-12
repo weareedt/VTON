@@ -5,19 +5,33 @@ const MAX_EDGE = 1280; // longest side after downscale
 const JPEG_QUALITY = 0.85;
 
 /**
- * Read a File into a downscaled JPEG data URL.
+ * Read a File into an upright, downscaled JPEG data URL.
+ * Phone photos are often stored sideways with an EXIF orientation tag; we apply
+ * that orientation so the image is physically upright before upload.
  * @returns {Promise<string>} data:image/jpeg;base64,...
  */
 export async function fileToScaledJpeg(file) {
+  // Preferred path: createImageBitmap bakes in EXIF orientation ('from-image').
+  if (typeof createImageBitmap === 'function') {
+    try {
+      const bitmap = await createImageBitmap(file, { imageOrientation: 'from-image' });
+      const out = scaleImageToJpeg(bitmap, bitmap.width, bitmap.height);
+      bitmap.close?.();
+      return out;
+    } catch {
+      /* fall through to the <img> path below */
+    }
+  }
+  // Fallback for older browsers (orientation may not be applied).
   const dataUrl = await readFileAsDataUrl(file);
   const img = await loadImage(dataUrl);
   return scaleImageToJpeg(img);
 }
 
-/** Scale an already-loaded <img> or <video> frame to a JPEG data URL. */
+/** Scale a loaded <img>/<video>/ImageBitmap to a JPEG data URL. */
 export function scaleImageToJpeg(source, sourceWidth, sourceHeight) {
-  const w = sourceWidth || source.naturalWidth || source.videoWidth;
-  const h = sourceHeight || source.naturalHeight || source.videoHeight;
+  const w = sourceWidth || source.naturalWidth || source.videoWidth || source.width;
+  const h = sourceHeight || source.naturalHeight || source.videoHeight || source.height;
 
   const scale = Math.min(1, MAX_EDGE / Math.max(w, h));
   const outW = Math.round(w * scale);

@@ -4,11 +4,15 @@
 const MAX_EDGE = 1280; // longest side after downscale
 const JPEG_QUALITY = 0.85;
 
+// Captured person photos are center-cropped to this portrait aspect (w/h) so the
+// result matches the on-screen 3:4 frame and the model's tall portrait output.
+const CAPTURE_ASPECT = 3 / 4;
+
 // Auto-exposure target for captured frames. Webcams in kiosks often under- or
-// over-expose; we nudge the mean brightness toward this and stretch contrast so
-// the person photo is well-lit for the try-on model (PLAN.md §8).
-const TARGET_LUMA = 122;
-const MIN_GAMMA = 0.45; // strongest brightening (very dark frame)
+// over-expose; we nudge the mean brightness toward this so the person photo is
+// well-lit for the try-on model (PLAN.md §8).
+const TARGET_LUMA = 130;
+const MIN_GAMMA = 0.38; // strongest brightening (very dark frame)
 const MAX_GAMMA = 1.5; // strongest darkening (blown-out frame)
 
 /**
@@ -44,13 +48,36 @@ export function scaleImageToJpeg(source, sourceWidth, sourceHeight) {
 }
 
 /**
- * Capture a camera frame to a JPEG, with automatic exposure correction so the
- * person photo is well-lit regardless of the webcam/lighting. Use this for the
- * camera step (not garment uploads, where we keep the product's true colors).
+ * Capture a camera frame to a JPEG: center-cropped to portrait 3:4 and with
+ * automatic exposure correction, so the person photo is well-framed and well-lit
+ * regardless of the webcam/lighting. Use this for the camera step only (not
+ * garment uploads, where we keep the product's true colors).
  */
 export function captureFrameToJpeg(source, sourceWidth, sourceHeight) {
-  const { canvas, ctx, w, h } = drawScaled(source, sourceWidth, sourceHeight);
-  normalizeExposure(ctx, w, h);
+  const sw = sourceWidth || source.videoWidth || source.naturalWidth || source.width;
+  const sh = sourceHeight || source.videoHeight || source.naturalHeight || source.height;
+
+  // Center-crop the (usually landscape) frame to portrait 3:4.
+  let cropW = sw;
+  let cropH = sh;
+  if (sw / sh > CAPTURE_ASPECT) {
+    cropW = Math.round(sh * CAPTURE_ASPECT); // too wide → trim sides
+  } else {
+    cropH = Math.round(sw / CAPTURE_ASPECT); // too tall → trim top/bottom
+  }
+  const sx = Math.round((sw - cropW) / 2);
+  const sy = Math.round((sh - cropH) / 2);
+
+  const scale = Math.min(1, MAX_EDGE / Math.max(cropW, cropH));
+  const outW = Math.round(cropW * scale);
+  const outH = Math.round(cropH * scale);
+
+  const canvas = document.createElement('canvas');
+  canvas.width = outW;
+  canvas.height = outH;
+  const ctx = canvas.getContext('2d');
+  ctx.drawImage(source, sx, sy, cropW, cropH, 0, 0, outW, outH);
+  normalizeExposure(ctx, outW, outH);
   return canvas.toDataURL('image/jpeg', JPEG_QUALITY);
 }
 
@@ -107,6 +134,15 @@ function normalizeExposure(ctx, w, h) {
     d[i + 2] = lut[d[i + 2]];
   }
   ctx.putImageData(image, 0, 0);
+}
+
+/**
+ * Load a same-origin image URL (e.g. a pre-stored garment) and return it as a
+ * downscaled JPEG data URL, ready to send to the backend.
+ */
+export async function urlToScaledJpeg(url) {
+  const img = await loadImage(url);
+  return scaleImageToJpeg(img);
 }
 
 function readFileAsDataUrl(file) {

@@ -5,6 +5,9 @@
   "functions": {
     "api/tryon.js": {
       "maxDuration": 60
+    },
+    "api/garments.js": {
+      "includeFiles": "client/public/garments/**"
     }
   },
   "rewrites": [

@@ -149,6 +149,73 @@ button {
   background: #000;
 }
 
+/* ---- Garment library grid ---- */
+.garment-grid {
+  flex: 1;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  grid-auto-rows: 1fr;
+  gap: 20px;
+  overflow-y: auto;
+  align-content: start;
+  padding: 4px;
+  min-height: 0;
+}
+.garment-tile {
+  position: relative;
+  background: var(--card);
+  border: 2px solid transparent;
+  border-radius: var(--radius);
+  overflow: hidden;
+  aspect-ratio: 3 / 4;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: var(--fg);
+  transition: border-color 0.15s, transform 0.1s;
+}
+.garment-tile:active { transform: scale(0.97); border-color: var(--accent); }
+.garment-tile:disabled { opacity: 0.5; }
+.garment-tile img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.garment-name {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 10px 12px;
+  font-size: 17px;
+  text-align: center;
+  background: linear-gradient(transparent, rgba(0, 0, 0, 0.75));
+  text-transform: capitalize;
+}
+.upload-tile {
+  border: 3px dashed #3a3a55;
+  color: var(--muted);
+  gap: 12px;
+}
+.upload-tile .garment-name {
+  position: static;
+  background: none;
+  padding: 0;
+}
+.upload-icon { font-size: 64px; line-height: 1; }
+.hint-text {
+  text-align: center;
+  color: var(--muted);
+  font-size: 17px;
+  margin-top: 16px;
+}
+.hint-text code {
+  background: var(--card);
+  padding: 2px 8px;
+  border-radius: 6px;
+}
+
 /* ---- Actions footer ---- */
 .actions {
   display: flex;
@@ -214,12 +281,31 @@ button {
   display: flex;
   align-items: center;
   justify-content: center;
+  padding: 12px;
+  min-height: 0;
 }
-.camera-video {
+/* Fixed portrait 3:4 frame, centered — matches what the capture crops to */
+.camera-frame {
+  position: relative;
+  height: 100%;
+  max-height: 100%;
+  max-width: 100%;
+  aspect-ratio: 3 / 4;
+  overflow: hidden;
+  border-radius: 16px;
+  background: #000;
+}
+.camera-video,
+.camera-shot {
   width: 100%;
   height: 100%;
   object-fit: cover;
   transform: scaleX(-1); /* mirror for a natural selfie feel */
+}
+/* Brighten the LIVE preview only (the saved frame is exposure-corrected already,
+   so the review <img> must not be double-brightened). */
+video.camera-video {
+  filter: brightness(1.32) contrast(1.04) saturate(1.05);
 }
 .frame-overlay {
   position: absolute;

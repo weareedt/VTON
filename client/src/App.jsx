@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import Welcome from './screens/Welcome.jsx';
-import Upload from './screens/Upload.jsx';
+import GarmentSelect from './screens/GarmentSelect.jsx';
 import EngineSelect from './screens/EngineSelect.jsx';
 import Camera from './screens/Camera.jsx';
 import Loading from './screens/Loading.jsx';
@@ -69,7 +69,7 @@ export default function App() {
 
     case 'upload':
       return (
-        <Upload
+        <GarmentSelect
           onBack={reset}
           onNext={(garmentImage) => {
             setSession((s) => ({ ...s, garmentImage }));

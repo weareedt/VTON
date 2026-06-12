@@ -1,9 +1,9 @@
 // While the backend generates: show the garment thumbnail + animated progress so
 // the wait feels intentional (PLAN.md §3).
 const LABELS = {
-  idmvton: 'Accurate (IDM-VTON)',
-  fashn: 'Accurate (FASHN)',
-  nanobanana: 'Creative (Nano Banana 2)',
+  idmvton: 'IDM-VTON',
+  fashn: 'FASHN',
+  nanobanana: 'Nano Banana 2',
 };
 
 export default function Loading({ garmentImage, engine }) {

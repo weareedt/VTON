@@ -99,25 +99,28 @@ export default function Camera({ onBack, onCapture }) {
   return (
     <div className="screen camera">
       <div className="camera-stage">
-        {/* Live preview (hidden while reviewing a shot) */}
-        <video
-          ref={videoRef}
-          className="camera-video"
-          playsInline
-          muted
-          style={{ display: shot ? 'none' : 'block' }}
-        />
-        {shot && <img className="camera-video" src={shot} alt="Your photo" />}
+        {/* Fixed portrait 3:4 frame — matches what gets captured */}
+        <div className="camera-frame">
+          {/* Live preview (hidden while reviewing a shot) */}
+          <video
+            ref={videoRef}
+            className="camera-video"
+            playsInline
+            muted
+            style={{ display: shot ? 'none' : 'block' }}
+          />
+          {shot && <img className="camera-shot" src={shot} alt="Your photo" />}
 
-        {/* Body-framing overlay — the highest-leverage UI element (PLAN.md §8) */}
-        {!shot && (
-          <div className="frame-overlay" aria-hidden="true">
-            <div className="frame-outline" />
-            <span className="frame-hint">Fit your upper body in the outline · face a light source</span>
-          </div>
-        )}
+          {/* Body-framing overlay — the highest-leverage UI element (PLAN.md §8) */}
+          {!shot && (
+            <div className="frame-overlay" aria-hidden="true">
+              <div className="frame-outline" />
+              <span className="frame-hint">Fit your upper body in the outline · face a light source</span>
+            </div>
+          )}
 
-        {countdown !== null && <div className="countdown">{countdown}</div>}
+          {countdown !== null && <div className="countdown">{countdown}</div>}
+        </div>
       </div>
 
       <footer className="camera-actions">

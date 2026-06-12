@@ -12,6 +12,7 @@ import { fileURLToPath } from 'node:url';
 
 import health from '../api/health.js';
 import tryon from '../api/tryon.js';
+import garments from '../api/garments.js';
 import resultHandler from '../api/result/[token].js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -24,11 +25,16 @@ app.use(express.json({ limit: '15mb' }));
 // API — the same handlers Vercel runs as functions.
 app.get('/api/health', health);
 app.post('/api/tryon', tryon);
+app.get('/api/garments', garments);
 // Vercel passes the dynamic segment as req.query.token; Express uses req.params.
 app.get('/api/result/:token', (req, res) => {
   req.query = { ...req.query, token: req.params.token };
   return resultHandler(req, res);
 });
+
+// Serve garment images live from the source folder so adding a garment needs no
+// rebuild — just drop a file in client/public/garments and refresh the kiosk.
+app.use('/garments', express.static(path.resolve(__dirname, '../client/public/garments')));
 
 // Static client + SPA fallback.
 app.use(express.static(dist));

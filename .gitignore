@@ -27,6 +27,8 @@ Thumbs.db
 /person*.jpg
 /tryon-output.*
 
-# never commit secrets / tokens
+# never commit secrets / tokens / loose notes
 hf_*
 *.token
+*.txt
+New Text Document.txt

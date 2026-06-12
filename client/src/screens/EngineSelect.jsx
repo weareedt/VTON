@@ -11,9 +11,9 @@ const ENGINES = [
   {
     id: 'nanobanana',
     emoji: '🎨',
-    title: 'Nano Banana 2',
+    title: 'Nano Banana',
     sub: 'Creative, stylized results',
-    tag: 'Preview',
+    tag: 'AI',
   },
 ];
 

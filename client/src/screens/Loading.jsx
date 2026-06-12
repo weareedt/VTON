@@ -3,7 +3,7 @@
 const LABELS = {
   idmvton: 'IDM-VTON',
   fashn: 'FASHN',
-  nanobanana: 'Nano Banana 2',
+  nanobanana: 'Nano Banana',
 };
 
 export default function Loading({ garmentImage, engine }) {

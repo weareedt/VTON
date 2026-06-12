@@ -16,8 +16,8 @@ The `engine` string the frontend sends is the registry key.
 
 | Engine key | Label in UI | Status |
 |---|---|---|
-| `idmvton` | Accurate (IDM-VTON) | Default Accurate engine — free |
-| `nanobanana` | Nano Banana | Creative engine — Google Gemini |
+| `nanobanana` | Nano Banana | Accurate, realistic results — Google Gemini |
+| `idmvton` | IDM-VTON | Experimental — free Hugging Face Space |
 | `fashn` | — | Wired up, not shown in UI (paid, production option) |
 
 ---
@@ -42,10 +42,10 @@ The `engine` string the frontend sends is the registry key.
   **billing enabled** on the Google Cloud project. `gemini-3.1-flash-image` (paid,
   ~5–15¢/image) gives better quality.
 - **Speed:** a few seconds, no polling — the most Vercel-friendly engine.
-- **Notes:** every output carries an invisible **SynthID** watermark. It
-  *reinterprets* the garment, so it's less faithful on fine detail than IDM-VTON.
-  A timid prompt makes it return the input nearly unchanged — the built-in prompt
-  is deliberately forceful.
+- **Notes:** in practice this gives the most accurate, realistic try-on of the
+  available engines. Every output carries an invisible **SynthID** watermark. A
+  timid prompt makes it return the input nearly unchanged — the built-in prompt is
+  deliberately forceful.
 - **Config:** `GEMINI_API_KEY`, optional `GEMINI_MODEL`, optional `NANOBANANA_PROMPT`.
 
 ## FASHN (`fashn`)
@@ -53,7 +53,7 @@ The `engine` string the frontend sends is the registry key.
 - **What:** [FASHN v1.6](https://fashn.ai) — a purpose-built try-on API (submit + poll).
 - **Cost:** paid, ~$0.075/image. Most accurate clothing swap.
 - **Status:** implemented in [`fashn.js`](../api/_lib/engines/fashn.js) but not shown
-  in the UI. To use it, point the Accurate card at `fashn` (see below) and set
+  in the UI. To use it, point an engine card at `fashn` (see below) and set
   `FASHN_API_KEY`.
 - **Config:** `FASHN_API_KEY`.
 
@@ -64,8 +64,8 @@ The `engine` string the frontend sends is the registry key.
 The engine cards are defined in
 [`client/src/screens/EngineSelect.jsx`](../client/src/screens/EngineSelect.jsx).
 Each card has an `id` that must match a registry key. For example, to make the
-"Accurate" card use FASHN instead of IDM-VTON, change its `id` from `idmvton` to
-`fashn` and set `FASHN_API_KEY`.
+IDM-VTON card use FASHN instead, change its `id` from `idmvton` to `fashn` and set
+`FASHN_API_KEY`.
 
 ## Adding a new engine
 

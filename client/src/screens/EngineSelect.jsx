@@ -3,16 +3,16 @@
 const ENGINES = [
   {
     id: 'idmvton',
-    emoji: '🎯',
+    emoji: '🧪',
     title: 'IDM-VTON',
-    sub: 'Accurate, detailed clothing swap',
+    sub: 'Experimental clothing swap',
     tag: 'Free',
   },
   {
     id: 'nanobanana',
-    emoji: '🎨',
+    emoji: '🎯',
     title: 'Nano Banana',
-    sub: 'Creative, stylized results',
+    sub: 'Accurate, realistic result',
     tag: 'AI',
   },
 ];

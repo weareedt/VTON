@@ -21,11 +21,11 @@ variable *name*; the **Value** is the secret.
 
 | Key | Value | Enables |
 |---|---|---|
-| `HF_TOKEN` | Hugging Face read token | IDM-VTON (Accurate) engine |
-| `GEMINI_API_KEY` | Google AI Studio key | Nano Banana (Creative) engine |
+| `HF_TOKEN` | Hugging Face read token | IDM-VTON engine |
+| `GEMINI_API_KEY` | Google AI Studio key | Nano Banana engine |
 | `GEMINI_MODEL` | *(optional)* `gemini-3.1-flash-image` | Paid "Nano Banana 2" (better quality) |
 | `NANOBANANA_PROMPT` | *(optional)* custom prompt | Tune the try-on instruction |
-| `FASHN_API_KEY` | *(optional)* FASHN key | If you switch Accurate → FASHN |
+| `FASHN_API_KEY` | *(optional)* FASHN key | If you use the FASHN engine |
 | `KV_REST_API_URL`, `KV_REST_API_TOKEN` | *(optional)* Upstash Redis | QR "save to phone" |
 
 > ⚠️ **Env vars only apply to deployments made *after* you save them.** After

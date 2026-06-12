@@ -15,9 +15,8 @@ kept safely on a thin serverless backend.
 
 - **Full kiosk flow:** Welcome → choose garment → pick engine → camera capture → loading → full-screen result.
 - **Two try-on engines** behind one interface (the frontend just sends `{ engine, garment, person }`):
-  - **IDM-VTON** — accurate, detailed clothing swap. Free via a Hugging Face Space.
-  - **Nano Banana** — Google Gemini Flash Image. Creative, fast.
-  - *(FASHN v1.6 is also wired up for paid/production use — see [docs/ENGINES.md](docs/ENGINES.md).)*
+  - **Nano Banana** — Google Gemini Flash Image. Accurate, realistic results; fast.
+  - **IDM-VTON** — experimental clothing swap. Free via a Hugging Face Space.
 - **Garment library** — pre-stored garments you can add/swap **without a rebuild** (drop a file in a folder, refresh).
 - **Camera niceties** — portrait 3:4 framing overlay, 3-2-1 countdown, retake, automatic exposure correction, and EXIF auto-rotation for uploads.
 - **Kiosk hygiene** — 60s idle auto-reset that wipes all images; images held in memory only (no disk persistence), per Malaysia PDPA.
@@ -87,7 +86,7 @@ None are committed to git. See [`.env.example`](.env.example).
 | `GEMINI_API_KEY` | Nano Banana engine | Free key from [Google AI Studio](https://aistudio.google.com). Image generation may require billing enabled on the project. |
 | `GEMINI_MODEL` | *(optional)* | Defaults to `gemini-2.5-flash-image`. Set to `gemini-3.1-flash-image` for the paid "Nano Banana 2" (better quality). |
 | `NANOBANANA_PROMPT` | *(optional)* | Override the built-in try-on instruction without a code change. |
-| `FASHN_API_KEY` | FASHN engine *(optional)* | Only if you switch the Accurate engine to FASHN. |
+| `FASHN_API_KEY` | FASHN engine *(optional)* | Only if you use the FASHN engine. |
 | `KV_REST_API_URL` / `KV_REST_API_TOKEN` | QR save *(optional)* | From an Upstash Redis store. Without them, QR is skipped (download still works). |
 
 A missing key makes only **that** engine return a graceful error — the rest of the kiosk keeps working.
